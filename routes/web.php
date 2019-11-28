@@ -44,11 +44,21 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
             $router->get('/authorize', 'Admin\AuthController@authorization');
             $router->get('/member/list', 'Admin\MemberController@list');
 
-            $router->group(['prefix' => 'job', 'namespace' => 'Job'], function () use ($router) {
+            $router->group(['prefix' => 'job', 'namespace' => 'Jobs'], function () use ($router) {
                 $router->post('/add', 'JobsController@addJob');
                 $router->post('/update/{uuid}', 'JobsController@updateJob');
                 $router->get('/list', 'JobsController@list');
                 $router->get('/application/{uuid}', 'JobsController@applications');
+            });
+
+
+            $router->group(['prefix' => 'payment', 'namespace' => 'Payment'], function () use ($router) {
+                $router->group(['prefix' => 'type'], function () use ($router) {
+                    $router->post('/add', 'PaymentController@addTypes');
+                    $router->post('/update/{uuid}', 'PaymentController@editTypes');
+                    $router->get('/list', 'PaymentController@listTypes');
+                    $router->get('/delete/{uuid}', 'PaymentController@deleteTypes');
+                });
             });
         });
     });

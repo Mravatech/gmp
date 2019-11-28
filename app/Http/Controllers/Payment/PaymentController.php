@@ -68,6 +68,17 @@ class PaymentController extends Controller
     }
 
 
+    /**
+     * List all available types
+     * @return JsonResponse
+     */
+    public function listTypes(): JsonResponse
+    {
+        return response()->json(['status' => 200, 'data' => PaymentTypes::all()]);
+
+    }
+
+
 
 
 

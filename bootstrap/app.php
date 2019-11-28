@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\CORS;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -57,9 +59,9 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
+ $app->middleware([
+     App\Http\Middleware\CORS::class,
+ ]);
 
  $app->routeMiddleware([
      'member' => App\Http\Middleware\AuthMiddleware::class,
