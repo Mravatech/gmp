@@ -13,6 +13,13 @@ class MentorController extends Controller
 
     public function requestMentor(Request $request): JsonResponse
     {
+        $user = $request->auth->id;
+
+        $this->validate($request, [
+            'reason' => 'required',
+            'preference' => 'string'
+        ]);
+
 
     }
 }
