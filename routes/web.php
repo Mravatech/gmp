@@ -55,9 +55,9 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
             $router->group(['prefix' => 'payment', 'namespace' => 'Payment'], function () use ($router) {
                 $router->group(['prefix' => 'type'], function () use ($router) {
                     $router->post('/add', 'PaymentController@addTypes');
-                    $router->post('/update/{uuid}', 'PaymentController@editTypes');
+                    $router->post('/edit/{uuid}', 'PaymentController@editTypes');
                     $router->get('/list', 'PaymentController@listTypes');
-                    $router->get('/delete/{uuid}', 'PaymentController@deleteTypes');
+                    $router->delete('/delete/{uuid}', 'PaymentController@deleteTypes');
                 });
             });
         });
