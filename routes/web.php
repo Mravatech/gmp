@@ -27,7 +27,7 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
         $router->post('/profile/update', 'Profile\ProfileController@add');
         $router->get('/profile', 'Profile\ProfileController@profile');
 
-        $router->group(['prefix' => 'job', 'namespace' => 'Job'], function () use ($router) {
+        $router->group(['prefix' => 'jobs', 'namespace' => 'Job'], function () use ($router) {
             $router->get('/list', 'JobsController@list');
             $router->get('/apply/{uuid}', 'JobsController@apply');
         });
