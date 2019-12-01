@@ -27,9 +27,9 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
         $router->post('/profile/update', 'Profile\ProfileController@add');
         $router->get('/profile', 'Profile\ProfileController@profile');
 
-        $router->group(['prefix' => 'jobs', 'namespace' => 'Job'], function () use ($router) {
+        $router->group(['prefix' => 'jobs', 'namespace' => 'Jobs'], function () use ($router) {
             $router->get('/list', 'JobsController@list');
-            $router->get('/apply/{uuid}', 'JobsController@apply');
+            $router->post('/apply/{uuid}', 'JobsController@apply');
         });
     });
 
@@ -50,6 +50,7 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
                 $router->get('/list', 'JobsController@list');
                 $router->get('/application/{uuid}', 'JobsController@applications');
             });
+            
 
 
             $router->group(['prefix' => 'payment', 'namespace' => 'Payment'], function () use ($router) {

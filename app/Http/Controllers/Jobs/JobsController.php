@@ -89,8 +89,8 @@ class JobsController extends Controller
     public function apply(Request $request, $uuid): JsonResponse
     {
         $this->validate($request, [
-            'cv' => 'required|mimes:pdf|max:10000',
-            'cover' => 'required|mimes:pdf|max:10000',
+            'cv' => 'required|max:10000',
+            'cover' => 'required|max:10000',
             'description' => 'required'
         ]);
 
@@ -117,7 +117,7 @@ class JobsController extends Controller
         if(!JobApplication::create($data))
             return response()->json(['status' => 400, 'message' => 'Unable to Apply, Please try again '], 400);
 
-        return response()->json(['status' => 200, 'message' => 'Applied successfully, Please try again '], 200);
+        return response()->json(['status' => 200, 'message' => 'Applied successfully'], 200);
     }
 
     /**
@@ -125,7 +125,7 @@ class JobsController extends Controller
      * @param $uuid
      * @return JsonResponse
      */
-    public function application($uuid): JsonResponse
+    public function applications($uuid): JsonResponse
     {
         $job = Jobs::where('uuid', $uuid)->first();
 
