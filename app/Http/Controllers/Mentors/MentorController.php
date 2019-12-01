@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MentorRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MentorController extends Controller
 {
@@ -24,11 +25,12 @@ class MentorController extends Controller
         $data = [
             'reason' => $request->input('reason'),
             'preference' => $request->input('preference'),
-            'user_id' => $user
+            'user_id' => $user,
+            'uuid' => Str::uuid()
         ];
 
 
-        if (!( MentorRequest::create($data))) // If storing of data failed
+        if (!(MentorRequest::create($data))) // If storing of data failed
             return response()->json(['status' => 400, 'message' => 'Request failed, Please try again!'], 400);
 
         return response()->json(['status' => 200, 'message' => 'Request successful!'], 200);
@@ -44,20 +46,19 @@ class MentorController extends Controller
     public function assignMentor(Request $request, $uuid): JsonResponse
     {
         $this->validate($request, [
-          'assigned_user' => 'required|exist:users'
+            'assigned_user' => 'required|exist:users'
         ]);
 
         $mentor_request = MentorRequest::where('uuid', $uuid);
 
-        if(!$mentor_request->first())
+        if (!$mentor_request->first())
             return response()->json(['status' => 400, 'message' => 'Invalid Request, Please try again!'], 400);
 
 
-        if(!$mentor_request->update(['assigned_user' => $request->input('assigned_user')]))
+        if (!$mentor_request->update(['assigned_user' => $request->input('assigned_user')]))
             return response()->json(['status' => 400, 'message' => 'Unable to assign, Please try again!'], 400);
 
         return response()->json(['status' => 200, 'message' => 'Mentor Assigned Successful!'], 200);
-
     }
 
 
@@ -84,11 +85,5 @@ class MentorController extends Controller
 
 
     public function submitReport(Request $request)
-    {
-
-    }
-
-
-
-
+    { }
 }

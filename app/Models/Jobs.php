@@ -16,4 +16,8 @@ class Jobs extends Model
         'deadline', 'status', 'gmp'
     ];
 
+    protected $cast = [
+        "status" => "boolean"
+    ];
+
 }

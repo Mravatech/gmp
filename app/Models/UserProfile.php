@@ -40,6 +40,7 @@ class UserProfile extends Model
         'work_role',
         'start_date',
         'end_date',
-        'description'
+        'description',
+        'passport'
     ];
 }

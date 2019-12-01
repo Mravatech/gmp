@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\UserProfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Helpers\Helpers;
+
 
 class ProfileController extends Controller
 {
@@ -22,14 +24,13 @@ class ProfileController extends Controller
         $user  = $request->auth->id;
         $profile = UserProfile::where('user_id', $user);
 
-        if(!$profile->first())
+        if (!$profile->first())
             return response()->json(['status' => 404, 'message' => 'User does not exist, Please try again!'], 404);
 
-        if(!$profile->update($request->all()))
+        if (!$profile->update($request->all()))
             return response()->json(['status' => 400, 'message' => 'Unable to update user, Please try again!'], 400);
 
         return response()->json(['status' => 200, 'message' => 'User Profile successfully Updated!'], 200);
-
     }
 
     /**
@@ -42,10 +43,27 @@ class ProfileController extends Controller
         $user  = $request->auth->id;
         $profile = UserProfile::where('user_id', $user);
 
-        if(!$profile->first())
+        if (!$profile->first())
             return response()->json(['status' => 400, 'message' => 'User does not exist, Please try again!'], 400);
 
         return response()->json(['status' => 200, 'data' => $profile->first()], 200);
+    }
 
+    public function updatePassport(Request $request): JsonResponse
+    {
+        $user  = $request->auth->id;
+        $profile = UserProfile::where('user_id', $user);
+
+        $this->validate($request, [
+            'passport' => 'required|max:10000',
+        ]);
+
+        if (!$profile->first())
+            return response()->json(['status' => 400, 'message' => 'User does not exist, Please try again!'], 400);
+
+        if (!$profile->update(['passport' => Helpers::uploadFile($request->file('passport'))]))
+            return response()->json(['status' => 400, 'message' => 'Unable to update user, Please try again!'], 400);
+
+        return response()->json(['status' => 200, 'message' => 'User Passport set successfully Updated!'], 200);
     }
 }

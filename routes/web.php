@@ -25,11 +25,17 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
     $router->group(['middleware' => 'member'], function () use ($router) {
         $router->get('/authorize', 'Auth\AuthController@authorization');
         $router->post('/profile/update', 'Profile\ProfileController@add');
+        $router->post('/profile/update/passport', 'Profile\ProfileController@updatePassport');
         $router->get('/profile', 'Profile\ProfileController@profile');
 
         $router->group(['prefix' => 'jobs', 'namespace' => 'Jobs'], function () use ($router) {
             $router->get('/list', 'JobsController@list');
             $router->post('/apply/{uuid}', 'JobsController@apply');
+        });
+
+        $router->group(['prefix' => 'mentor', 'namespace' => 'Mentors'], function () use ($router) {
+            $router->post('/request', 'MentorController@requestMentor');
+            $router->get('/list', 'MentorController@myRequest');
         });
     });
 
@@ -50,7 +56,12 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
                 $router->get('/list', 'JobsController@list');
                 $router->get('/application/{uuid}', 'JobsController@applications');
             });
-            
+
+            $router->group(['prefix' => 'mentor', 'namespace' => 'Mentors'], function () use ($router) {
+                $router->post('/assign', 'MentorController@assignMentor');
+                $router->get('/list', 'MentorController@allRequest');
+            });
+
 
 
             $router->group(['prefix' => 'payment', 'namespace' => 'Payment'], function () use ($router) {
