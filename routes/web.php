@@ -26,6 +26,8 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
         $router->get('/authorize', 'Auth\AuthController@authorization');
         $router->post('/profile/update', 'Profile\ProfileController@add');
         $router->post('/profile/update/passport', 'Profile\ProfileController@updatePassport');
+        $router->post('/profile/update/education', 'Profile\ProfileController@updateEducation');
+        $router->post('/profile/update/experience', 'Profile\ProfileController@updateExperience');
         $router->get('/profile', 'Profile\ProfileController@profile');
 
         $router->group(['prefix' => 'jobs', 'namespace' => 'Jobs'], function () use ($router) {

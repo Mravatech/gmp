@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 use App\Models\UserProfile;
+use App\Models\Education;
+use App\Models\Experience;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -31,10 +33,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password', 'id'
     ];
 
+    protected $with= ['']
+
 
 
     public function details()
     {
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
+    }
+
+
+    public function education()
+    {
+        return $this->hasOne(Education::class, 'user_id', 'id');
+    }
+
+
+    public function experience()
+    {
+        return $this->hasOne(Experience::class, 'user_id', 'id');
     }
 }

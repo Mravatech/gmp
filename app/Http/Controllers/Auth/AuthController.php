@@ -4,16 +4,18 @@
 namespace App\Http\Controllers\Auth;
 
 
-use App\Http\Controllers\Controller;
-use App\Models\MemberBank;
 use App\Models\User;
-use App\Models\UserProfile;
-use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Education;
+use App\Models\Experience;
+use App\Models\MemberBank;
+use App\Models\UserProfile;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Firebase\JWT\ExpiredException;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -54,7 +56,7 @@ class AuthController extends Controller
 
         $member_id = $this->generateMemeberID();
 
-        if(!$member_id)
+        if (!$member_id)
             return response()->json(['status' => 400, 'message' => 'Registration failed, Unable to generate Membership ID!'], 400);
 
 
@@ -77,6 +79,16 @@ class AuthController extends Controller
             'user_id' => $user->id
         ]);
 
+        Education::create([
+            'uuid' => Str::uuid(),
+            'member_id' => $member_id,
+        ]);
+
+        Experience::create([
+            'uuid' => Str::uuid(),
+            'member_id' => $member_id,
+        ]);
+
         return response()->json(['status' => 200, 'message' => 'Registration successful!'], 200);
     }
 
@@ -92,7 +104,7 @@ class AuthController extends Controller
 
         $bank = MemberBank::orderBy('id', 'desc')->first();
 
-        if($bank){
+        if ($bank) {
             $newMemeber = $bank->member + 1;
         } else {
             $newMemeber = $number;
@@ -103,7 +115,7 @@ class AuthController extends Controller
             'member' => $newMemeber
         ];
 
-        if(!MemberBank::create($data))
+        if (!MemberBank::create($data))
             return  false;
 
         return $str . $newMemeber;
@@ -119,9 +131,9 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $this->validate($request, [
-                'email' => 'required',
-                'password' => 'required'
-            ]);
+            'email' => 'required',
+            'password' => 'required'
+        ]);
 
         $data = User::where('email', $request->json('email'))->first(); // Find the user by email
 
@@ -148,7 +160,6 @@ class AuthController extends Controller
             'status' => 400,
             'message' => 'Login details provided does not exit.'
         ], 400);
-
     }
 
     /**

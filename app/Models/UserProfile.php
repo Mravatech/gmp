@@ -30,17 +30,21 @@ class UserProfile extends Model
         'sector',
         'sub_sector',
         'occupation',
-        'institute',
-        'qualification',
-        'field_of_study',
-        'year_of_graduation',
-        'position_rank',
-        'company',
-        'location',
-        'work_role',
-        'start_date',
-        'end_date',
-        'description',
         'passport'
     ];
+
+    protected $with = ['education', 'experience'];
+
+
+
+    public function education()
+    {
+        return $this->hasOne(Education::class, 'user_id', 'user_id');
+    }
+
+
+    public function experience()
+    {
+        return $this->hasOne(Experience::class, 'user_id', 'user_id');
+    }
 }

@@ -4,11 +4,13 @@
 namespace App\Http\Controllers\Profile;
 
 
-use App\Http\Controllers\Controller;
-use App\Models\UserProfile;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Helpers\Helpers;
+use App\Models\Education;
+use App\Models\Experience;
+use App\Models\UserProfile;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 
 
 class ProfileController extends Controller
@@ -65,5 +67,35 @@ class ProfileController extends Controller
             return response()->json(['status' => 400, 'message' => 'Unable to update user, Please try again!'], 400);
 
         return response()->json(['status' => 200, 'message' => 'User Passport set successfully Updated!'], 200);
+    }
+
+
+    public  function updateEducation(Request $request)
+    {
+        $user  = $request->auth->id;
+        $profile = Education::where('user_id', $user);
+
+        if (!$profile->first())
+            return response()->json(['status' => 404, 'message' => 'User does not exist, Please try again!'], 404);
+
+        if (!$profile->update($request->all()))
+            return response()->json(['status' => 400, 'message' => 'Unable to update user, Please try again!'], 400);
+
+        return response()->json(['status' => 200, 'message' => 'User Education Profile successfully Updated!'], 200);
+    }
+
+
+    public  function updateExperience(Request $request)
+    {
+        $user  = $request->auth->id;
+        $profile = Experience::where('user_id', $user);
+
+        if (!$profile->first())
+            return response()->json(['status' => 404, 'message' => 'User does not exist, Please try again!'], 404);
+
+        if (!$profile->update($request->all()))
+            return response()->json(['status' => 400, 'message' => 'Unable to update user, Please try again!'], 400);
+
+        return response()->json(['status' => 200, 'message' => 'User Education Profile successfully Updated!'], 200);
     }
 }
