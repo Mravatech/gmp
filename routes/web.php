@@ -22,6 +22,11 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
     $router->post('/register', 'Auth\AuthController@register');
     $router->post('/login', 'Auth\AuthController@login');
 
+    $router->post('/paymentUpdate', 'Auth\AuthController@fromPayvantage');
+
+
+
+
     $router->group(['middleware' => 'member'], function () use ($router) {
         $router->get('/authorize', 'Auth\AuthController@authorization');
         $router->post('/profile/update', 'Profile\ProfileController@add');
@@ -38,6 +43,12 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
         $router->group(['prefix' => 'mentor', 'namespace' => 'Mentors'], function () use ($router) {
             $router->post('/request', 'MentorController@requestMentor');
             $router->get('/list', 'MentorController@myRequest');
+        });
+
+        $router->group(['prefix' => 'convention', 'namespace' => 'Convention'], function () use ($router) {
+            $router->get('/list', 'ConventionController@getAllConvention');
+            $router->get('/list/{year}', 'ConventionController@getConventionByYear');
+            $router->get('/start', 'ConventionController@startPayment');
         });
     });
 
@@ -62,6 +73,14 @@ $router->group(['prefix' => 'api/v1'], function (Laravel\Lumen\Routing\Router $r
             $router->group(['prefix' => 'mentor', 'namespace' => 'Mentors'], function () use ($router) {
                 $router->post('/assign', 'MentorController@assignMentor');
                 $router->get('/list', 'MentorController@allRequest');
+            });
+
+            $router->group(['prefix' => 'convention', 'namespace' => 'Convention'], function () use ($router) {
+                $router->get('/list', 'ConventionController@getAllConvention');
+                $router->get('/list/{year}', 'ConventionController@getConventionByYear');
+                $router->post('/add', 'ConventionController@createConvention');
+                $router->post('/create/fee/{uuid}', 'ConventionController@createFees');
+                $router->post('/start/{uuid}', 'ConventionController@startPayment');
             });
 
 
